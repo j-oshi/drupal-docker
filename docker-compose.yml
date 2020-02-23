@@ -1,0 +1,33 @@
+version: '3'
+services:
+  web:
+    image: osiolabs/drupaldevwithdocker-php:7.2
+    container_name: "${PROJECT_NAME}"
+    volumes:
+      - ./drupal:/var/www:cached
+    environment:
+      APACHE_DOCROOT_DIR: /var/www/web
+    ports:
+      - "${SERVER_PORT}"
+  db:
+    image: osiolabs/drupaldevwithdocker-mysql
+    container_name: "${PROJECT_NAME}-mysql"
+    volumes:
+      - ./db-backups:/var/mysql/backups:delegated
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+    ports:
+      - "${DB_PORT}"
+  pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PHP_UPLOAD_MAX_FILESIZE: 1G
+      PHP_MAX_INPUT_VARS: 1G
+    ports:
+     - "${PMA_PORT}"
