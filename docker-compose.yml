@@ -4,9 +4,7 @@ services:
     image: osiolabs/drupaldevwithdocker-php:7.2
     container_name: "${PROJECT_NAME}"
     volumes:
-      - ./drupal:/var/www:cached
-    environment:
-      APACHE_DOCROOT_DIR: /var/www/web
+      - ./docroot:/var/www/html:cached
     ports:
       - "${SERVER_PORT}"
   db:
